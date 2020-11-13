@@ -1,6 +1,6 @@
 # Web Application using streamlit
 
-This project uses data from Faker library on user profile and reviews to generate 3 interactive charts and 1 table. </br>
+This dashboard analyses 500 user profiles and text reviews generated from Faker library.
 :point_right: http://faker-streamlit.herokuapp.com/
 
 The first chart is a histogram to analyze total or average salary of users by sentiment, country and gender.</br>
