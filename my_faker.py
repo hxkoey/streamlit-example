@@ -53,7 +53,7 @@ def create_data():
 @st.cache(persist=True)
 def load_data():
     data = create_data()
-    data = pd.read_csv('faker.csv')
+    #data = pd.read_csv('faker.csv')
     data['dob'] = pd.to_datetime(data['dob'])
     return data
 
