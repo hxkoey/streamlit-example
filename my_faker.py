@@ -6,6 +6,7 @@ import random
 import plotly.express as px
 #import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
+import base64
 
 st.title('Hello from hxkoey!')
 st.markdown('The dataset was generated using Faker, which shows user job, country, salary, age and review. Raw data can be found in the last table below.')
@@ -49,6 +50,26 @@ def create_data():
     #df.to_csv('faker.csv', index=None)
     return df
 
+def download_link(object_to_download, download_filename, download_link_text):
+    """
+    Generates a link to download the given object_to_download.
+
+    object_to_download (str, pd.DataFrame):  The object to be downloaded.
+    download_filename (str): filename and extension of file. e.g. mydata.csv, some_txt_output.txt
+    download_link_text (str): Text to display for download link.
+
+    Examples:
+    download_link(YOUR_DF, 'YOUR_DF.csv', 'Click here to download data!')
+    download_link(YOUR_STRING, 'YOUR_STRING.txt', 'Click here to download your text!')
+
+    """
+    if isinstance(object_to_download,pd.DataFrame):
+        object_to_download = object_to_download.to_csv(index=False)
+
+    # some strings <-> bytes conversions necessary here
+    b64 = base64.b64encode(object_to_download.encode()).decode()
+
+    return f'<a href="data:file/txt;base64,{b64}" download="{download_filename}">{download_link_text}</a>'
 
 @st.cache(persist=True)
 def load_data():
@@ -120,3 +141,7 @@ if not st.sidebar.checkbox('Close wordcloud', True):
 if st.sidebar.checkbox('Show raw data',True):
     st.subheader('Showing raw data below')
     st.write(data)
+
+    with st.beta_expander("Expand to download data into CSV"):
+        tmp_download_link = download_link(data, 'faker-data.csv', 'Click here to download your data!')
+        st.markdown(tmp_download_link, unsafe_allow_html=True)
